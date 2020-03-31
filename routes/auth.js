@@ -31,10 +31,11 @@ router.route('/login').post(async (req,res,next) => {
 
         const token = jwt.sign({ email }, 'shhhhh');
 
+        await User.update({ _id: found._id }, { $set: { token } })
+
         return res.json({
             status: true,
-            data: found,
-            token
+            data: await User.findOne({ _id: found._id })
         })
     } catch(e) {
         return res.json({
